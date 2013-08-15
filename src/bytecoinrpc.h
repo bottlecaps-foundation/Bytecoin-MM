@@ -145,21 +145,8 @@ extern json_spirit::Value getwork(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getblocktemplate(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getblocktemplateaux(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value submitblock(const json_spirit::Array& params, bool fHelp);
-<<<<<<< HEAD:src/bytecoinrpc.h
-<<<<<<< HEAD:src/bytecoinrpc.h
-extern json_spirit::Value getauxfromblock(const json_spirit::Array& params, bool fHelp);
-extern json_spirit::Value getauxpowfromblock(const json_spirit::Array& params, bool fHelp);
-extern json_spirit::Value getauxblock(const json_spirit::Array& params, bool fHelp);
-extern json_spirit::Value buildmerkletree(const json_spirit::Array& params, bool fHelp);
-extern json_spirit::Value getworkaux(const json_spirit::Array& params, bool fHelp);
-=======
 extern json_spirit::Value getworkaux(const json_spirit::Array& params, bool fHelp);
 extern json_spirit::Value getauxblock(const json_spirit::Array& params, bool fHelp);
->>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.h
-=======
-extern json_spirit::Value getworkaux(const json_spirit::Array& params, bool fHelp);
-extern json_spirit::Value getauxblock(const json_spirit::Array& params, bool fHelp);
->>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.h
 
 extern json_spirit::Value getnewaddress(const json_spirit::Array& params, bool fHelp); // in rpcwallet.cpp
 extern json_spirit::Value getaccountaddress(const json_spirit::Array& params, bool fHelp);

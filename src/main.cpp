@@ -1044,15 +1044,7 @@ bool CBlock::ReadFromDisk(const CBlockIndex* pindex)
     return true;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-void CBlock::SetAuxPow(CAuxPow* pow)
-=======
 void CBlockHeader::SetAuxPow(CAuxPow* pow)
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-void CBlockHeader::SetAuxPow(CAuxPow* pow)
->>>>>>> 1ce1ec0... first test of merged mining patch
 {
     if (pow != NULL)
         nVersion |=  BLOCK_VERSION_AUXPOW;
@@ -1587,15 +1579,7 @@ void ThreadScriptCheckQuit() {
 bool CBlock::ConnectBlock(CValidationState &state, CBlockIndex* pindex, CCoinsViewCache &view, bool fJustCheck)
 {
     // Check it again in case a previous version let a bad block in
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if (!CheckBlock(pindex->nHeight, state, !fJustCheck, !fJustCheck))
-=======
     if (!CheckBlock(state, pindex->nHeight, !fJustCheck, !fJustCheck))
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-    if (!CheckBlock(state, pindex->nHeight, !fJustCheck, !fJustCheck))
->>>>>>> 1ce1ec0... first test of merged mining patch
         return false;
 
     // verify that the view's current state corresponds to the previous block
@@ -2174,16 +2158,7 @@ bool FindUndoPos(CValidationState &state, int nFile, CDiskBlockPos &pos, unsigne
     return true;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-bool CBlock::CheckBlock(int nHeight, CValidationState &state, bool fCheckPOW, bool fCheckMerkleRoot) const
-=======
 bool CBlock::CheckBlock(CValidationState &state, int nHeight, bool fCheckPOW, bool fCheckMerkleRoot) const
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-bool CBlock::CheckBlock(CValidationState &state, int nHeight, bool fCheckPOW, bool fCheckMerkleRoot) const
->>>>>>> 1ce1ec0... first test of merged mining patch
 {
     // These are checks that are independent of context
     // that can be verified before saving an orphan block.
@@ -2369,15 +2344,7 @@ bool ProcessBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDiskBl
         return state.Invalid(error("ProcessBlock() : already have block (orphan) %s", BlockHashStr(hash).c_str()));
 
     // Preliminary checks
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if (!pblock->CheckBlock(INT_MAX, state))
-=======
     if (!pblock->CheckBlock(state, INT_MAX))
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-    if (!pblock->CheckBlock(state, INT_MAX))
->>>>>>> 1ce1ec0... first test of merged mining patch
         return error("ProcessBlock() : CheckBlock FAILED");
 
     CBlockIndex* pcheckpoint = Checkpoints::GetLastCheckpoint(mapBlockIndex);
@@ -2772,15 +2739,7 @@ bool VerifyDB() {
         if (!block.ReadFromDisk(pindex))
             return error("VerifyDB() : *** block.ReadFromDisk failed at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString().c_str());
         // check level 1: verify block validity
-<<<<<<< HEAD
-<<<<<<< HEAD
-        if (nCheckLevel >= 1 && !block.CheckBlock(pindex->nHeight, state))
-=======
         if (nCheckLevel >= 1 && !block.CheckBlock(state, pindex->nHeight))
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-        if (nCheckLevel >= 1 && !block.CheckBlock(state, pindex->nHeight))
->>>>>>> 1ce1ec0... first test of merged mining patch
             return error("VerifyDB() : *** found bad block at %d, hash=%s\n", pindex->nHeight, pindex->GetBlockHash().ToString().c_str());
         // check level 2: verify undo validity
         if (nCheckLevel >= 2 && pindex) {
@@ -4609,48 +4568,6 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
 
     CAuxPow *auxpow = pblock->auxpow.get();
-<<<<<<< HEAD
-
-    if (auxpow != NULL)
-    {
-        if (!auxpow->Check(hash, pblock->GetChainID()))
-            return error("AUX POW is not valid");
-
-        if (auxpow->GetParentBlockHash() > hashTarget)
-            return error("AUX POW parent hash %s is not under target %s", auxpow->GetParentBlockHash().GetHex().c_str(), hashTarget.GetHex().c_str());
-<<<<<<< HEAD
-
-        //// debug print
-        printf("BytecoinMiner:\n");
-        printf("AUX proof-of-work found  \n     our hash: %s   \n  parent hash: %s  \n       target: %s\n",
-                hash.GetHex().c_str(),
-                auxpow->GetParentBlockHash().GetHex().c_str(),
-                hashTarget.GetHex().c_str());
-    }
-    else
-    {
-        if (hash > hashTarget)
-            return false;
-    }
- 
-    //// debug print
-    printf("BytecoinMiner:\n");
-    printf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex().c_str(), hashTarget.GetHex().c_str());
-=======
-
-        //// debug print
-        printf("BytecoinMiner:\n");
-        printf("AUX proof-of-work found  \n     our hash: %s   \n  parent hash: %s  \n       target: %s\n",
-                hash.GetHex().c_str(),
-                auxpow->GetParentBlockHash().GetHex().c_str(),
-                hashTarget.GetHex().c_str());
-    }
-    else
-    {
-        if (hash > hashTarget)
-            return false;
-
-=======
 
     if (auxpow != NULL)
     {
@@ -4672,16 +4589,11 @@ bool CheckWork(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
         if (hash > hashTarget)
             return false;
 
->>>>>>> 1ce1ec0... first test of merged mining patch
         //// debug print
         printf("BytecoinMiner:\n");
         printf("proof-of-work found  \n  hash: %s  \ntarget: %s\n", hash.GetHex().c_str(), hashTarget.GetHex().c_str());
     }
  
-<<<<<<< HEAD
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch
     pblock->print();
     printf("generated %s\n", FormatMoney(pblock->vtx[0].vout[0].nValue).c_str());
 

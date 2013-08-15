@@ -2,13 +2,6 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file license.txt or http://www.opensource.org/licenses/mit-license.php.
 #include "script.h"
-<<<<<<< HEAD
-<<<<<<< HEAD
-#include "main.h"
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch
 #include "auxpow.h"
 #include "init.h"
 
@@ -29,15 +22,7 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
     if (nIndex != 0)
         return error("AuxPow is not a generate");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if (!fTestNet && parentBlock.GetChainID() == nChainID)
-=======
     if (!fTestNet && parentBlockHeader.GetChainID() == nChainID)
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-    if (!fTestNet && parentBlockHeader.GetChainID() == nChainID)
->>>>>>> 1ce1ec0... first test of merged mining patch
         return error("Aux POW parent has our chain ID");
 
     if (vChainMerkleBranch.size() > 30)
@@ -49,15 +34,7 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
     std::reverse(vchRootHash.begin(), vchRootHash.end()); // correct endian
 
     // Check that we are in the parent block merkle tree
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if (CBlock::CheckMerkleBranch(GetHash(), vMerkleBranch, nIndex) != parentBlock.hashMerkleRoot)
-=======
     if (CBlock::CheckMerkleBranch(GetHash(), vMerkleBranch, nIndex) != parentBlockHeader.hashMerkleRoot)
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-    if (CBlock::CheckMerkleBranch(GetHash(), vMerkleBranch, nIndex) != parentBlockHeader.hashMerkleRoot)
->>>>>>> 1ce1ec0... first test of merged mining patch
         return error("Aux POW merkle root incorrect");
 
     const CScript script = vin[0].scriptSig;
@@ -124,43 +101,18 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
     return true;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-CScript MakeCoinbaseWithAux(unsigned int nHeight, unsigned int nBits, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
-=======
 CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
->>>>>>> 1ce1ec0... first test of merged mining patch
 {
     vector<unsigned char> vchAuxWithHeader(UBEGIN(pchMergedMiningHeader), UEND(pchMergedMiningHeader));
     vchAuxWithHeader.insert(vchAuxWithHeader.end(), vchAux.begin(), vchAux.end());
 
     // Push OP_2 just in case we want versioning later
-<<<<<<< HEAD
-<<<<<<< HEAD
-    return CScript() << nHeight << nBits << nExtraNonce << OP_2 << vchAuxWithHeader;
-=======
     return CScript() << nBits << nExtraNonce << OP_2 << vchAuxWithHeader;
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
-    return CScript() << nBits << nExtraNonce << OP_2 << vchAuxWithHeader;
->>>>>>> 1ce1ec0... first test of merged mining patch
 }
 
 
 void IncrementExtraNonceWithAux(CBlock* pblock, CBlockIndex* pindexPrev, unsigned int& nExtraNonce, vector<unsigned char>& vchAux)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    vector<unsigned char> vchAuxWithHeader(UBEGIN(pchMergedMiningHeader), UEND(pchMergedMiningHeader));
-    vchAuxWithHeader.insert(vchAuxWithHeader.end(), vchAux.begin(), vchAux.end());
-
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch
     // Update nExtraNonce
     static uint256 hashPrevBlock;
     if (hashPrevBlock != pblock->hashPrevBlock)
@@ -169,27 +121,9 @@ void IncrementExtraNonceWithAux(CBlock* pblock, CBlockIndex* pindexPrev, unsigne
         hashPrevBlock = pblock->hashPrevBlock;
     }
     ++nExtraNonce;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for block.version=2
-    pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(nHeight, pblock->nBits, nExtraNonce, vchAux);
-    assert(pblock->vtx[0].vin[0].scriptSig.size() <= 100);
-
-    pblock->hashMerkleRoot = pblock->BuildMerkleTree();
-}
-
-template
-int ReadWriteAuxPow(ser_streamplaceholder& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionGetSerializeSize ser_action);
-=======
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch
 
     pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(pblock->nBits, nExtraNonce, vchAux);
     pblock->hashMerkleRoot = pblock->BuildMerkleTree();
 }
 
 
-<<<<<<< HEAD
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch

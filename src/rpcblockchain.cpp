@@ -9,10 +9,6 @@
 =======
 #include "bitcoinrpc.h"
 #include "auxpow.h"
-<<<<<<< HEAD
->>>>>>> 1ce1ec0... first test of merged mining patch
-=======
->>>>>>> 1ce1ec0... first test of merged mining patch
 
 using namespace json_spirit;
 using namespace std;
