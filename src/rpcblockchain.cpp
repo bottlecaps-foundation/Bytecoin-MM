@@ -4,7 +4,12 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "main.h"
+<<<<<<< HEAD
 #include "bytecoinrpc.h"
+=======
+#include "bitcoinrpc.h"
+#include "auxpow.h"
+>>>>>>> 1ce1ec0... first test of merged mining patch
 
 using namespace json_spirit;
 using namespace std;

@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "init.h"
+#include "auxpow.h"
 #include "util.h"
 #include "sync.h"
 #include "ui_interface.h"
@@ -180,10 +181,17 @@ Value stop(const Array& params, bool fHelp)
     if (fHelp || params.size() > 1)
         throw runtime_error(
             "stop\n"
+<<<<<<< HEAD:src/bytecoinrpc.cpp
             "Stop Bytecoin server.");
     // Shutdown will take long enough that the response should get back
     StartShutdown();
     return "Bytecoin server stopping";
+=======
+            "Stop I0coin server.");
+    // Shutdown will take long enough that the response should get back
+    StartShutdown();
+    return "I0coin server stopping";
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 }
 
 
@@ -384,6 +392,7 @@ static const CRPCCommand vRPCCommands[] =
     { "verifymessage",          &verifymessage,          false,  false },
     { "getwork",                &getwork,                true,   false },
     { "getworkaux",             &getworkaux,             true,   false },
+<<<<<<< HEAD:src/bytecoinrpc.cpp
     { "getauxblock",            &getauxblock,            true,   false },
     { "buildmerkletree",        &buildmerkletree,        true,   false },
     { "listaccounts",           &listaccounts,           false,  false },
@@ -392,6 +401,12 @@ static const CRPCCommand vRPCCommands[] =
     { "getblocktemplateaux",    &getblocktemplateaux,    true,   false },
     { "getauxfromblock",        &getauxfromblock,        false,  false },
     { "getauxpowfromblock",     &getauxpowfromblock,     false,  false },
+=======
+    { "listaccounts",           &listaccounts,           false,  false },
+    { "settxfee",               &settxfee,               false,  false },
+    { "getblocktemplate",       &getblocktemplate,       true,   false },
+    { "getauxblock",            &getauxblock,            true,   false },
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
     { "submitblock",            &submitblock,            false,  false },
     { "listsinceblock",         &listsinceblock,         false,  false },
     { "dumpprivkey",            &dumpprivkey,            false,  false },
@@ -439,7 +454,11 @@ string HTTPPost(const string& strMsg, const map<string,string>& mapRequestHeader
 {
     ostringstream s;
     s << "POST / HTTP/1.1\r\n"
+<<<<<<< HEAD:src/bytecoinrpc.cpp
       << "User-Agent: bytecoin-json-rpc/" << FormatFullVersion() << "\r\n"
+=======
+      << "User-Agent: i0coin-json-rpc/" << FormatFullVersion() << "\r\n"
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
       << "Host: 127.0.0.1\r\n"
       << "Content-Type: application/json\r\n"
       << "Content-Length: " << strMsg.size() << "\r\n"
@@ -470,7 +489,11 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
     if (nStatus == HTTP_UNAUTHORIZED)
         return strprintf("HTTP/1.0 401 Authorization Required\r\n"
             "Date: %s\r\n"
+<<<<<<< HEAD:src/bytecoinrpc.cpp
             "Server: bytecoin-json-rpc/%s\r\n"
+=======
+            "Server: i0coin-json-rpc/%s\r\n"
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
             "WWW-Authenticate: Basic realm=\"jsonrpc\"\r\n"
             "Content-Type: text/html\r\n"
             "Content-Length: 296\r\n"
@@ -497,7 +520,11 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
             "Connection: %s\r\n"
             "Content-Length: %"PRIszu"\r\n"
             "Content-Type: application/json\r\n"
+<<<<<<< HEAD:src/bytecoinrpc.cpp
             "Server: bytecoin-json-rpc/%s\r\n"
+=======
+            "Server: i0coin-json-rpc/%s\r\n"
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
             "\r\n"
             "%s",
         nStatus,
@@ -628,7 +655,11 @@ bool HTTPAuthorized(map<string, string>& mapHeaders)
 }
 
 //
+<<<<<<< HEAD:src/bytecoinrpc.cpp
 // JSON-RPC protocol.  Bytecoin speaks version 1.0 for maximum compatibility,
+=======
+// JSON-RPC protocol.  I0coin speaks version 1.0 for maximum compatibility,
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 // but uses JSON-RPC 1.1/2.0 standards for parts of the 1.0 standard that were
 // unspecified (HTTP errors and contents of 'error').
 //
@@ -905,7 +936,11 @@ void ThreadRPCServer2(void* parg)
     {
         unsigned char rand_pwd[32];
         RAND_bytes(rand_pwd, 32);
+<<<<<<< HEAD:src/bytecoinrpc.cpp
         string strWhatAmI = "To use bytecoind";
+=======
+        string strWhatAmI = "To use i0coind";
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
         if (mapArgs.count("-server"))
             strWhatAmI = strprintf(_("To use the %s option"), "\"-server\"");
         else if (mapArgs.count("-daemon"))
@@ -1052,7 +1087,12 @@ void JSONRequest::parse(const Value& valRequest)
     if (valMethod.type() != str_type)
         throw JSONRPCError(RPC_INVALID_REQUEST, "Method must be a string");
     strMethod = valMethod.get_str();
+<<<<<<< HEAD:src/bytecoinrpc.cpp
     if (strMethod != "getwork" && strMethod != "getblocktemplate" && strMethod != "getblocktemplateaux" && strMethod != "getblockcount" && strMethod != "getworkaux" && strMethod != "getauxblock" && strMethod != "buildmerkletree" && strMethod != "getauxfromblock" && strMethod != "getauxpowfromblock")
+=======
+    if (strMethod != "getwork" && strMethod != "getblocktemplate" &&
+            strMethod != "getworkaux" && strMethod != "getauxblock")
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
         printf("ThreadRPCServer method=%s\n", strMethod.c_str());
 
     // Parse params
@@ -1369,6 +1409,7 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "createrawtransaction"   && n > 1) ConvertTo<Object>(params[1]);
     if (strMethod == "signrawtransaction"     && n > 1) ConvertTo<Array>(params[1], true);
     if (strMethod == "signrawtransaction"     && n > 2) ConvertTo<Array>(params[2], true);
+    if (strMethod == "getworkaux"             && n > 2) ConvertTo<boost::int64_t>(params[2]);
     if (strMethod == "gettxout"               && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "gettxout"               && n > 2) ConvertTo<bool>(params[2]);
     if (strMethod == "lockunspent"            && n > 0) ConvertTo<bool>(params[0]);

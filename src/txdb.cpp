@@ -5,6 +5,7 @@
 
 #include "txdb.h"
 #include "main.h"
+#include "auxpow.h"
 
 using namespace std;
 

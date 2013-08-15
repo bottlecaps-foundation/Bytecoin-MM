@@ -22,7 +22,10 @@ class CReserveKey;
 class CAddress;
 class CInv;
 class CNode;
+<<<<<<< HEAD
 class CBlockIndex;
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
 class CAuxPow;
 
 struct CBlockIndexWorkComparator;
@@ -181,6 +184,9 @@ int GetNumBlocksOfPeers();
 bool IsInitialBlockDownload();
 /** Format a string that describes several potential problems detected by the core */
 std::string GetWarnings(std::string strFor);
+bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock);
+int GetOurChainID();
+
 /** Retrieve a transaction (from memory pool, or from disk, if possible) */
 bool GetTransaction(const uint256 &hash, CTransaction &tx, uint256 &hashBlock, bool fAllowSlow = false);
 /** Connect/disconnect blocks until pindexNew is the new tip of the active block chain */
@@ -1164,6 +1170,18 @@ int ReadWriteAuxPow(Stream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nTy
 int ReadWriteAuxPow(CDataStream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionSerialize ser_action);
 
 
+<<<<<<< HEAD
+=======
+template <typename Stream>
+int ReadWriteAuxPow(Stream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionSerialize ser_action);
+
+template <typename Stream>
+int ReadWriteAuxPow(Stream& s, boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionUnserialize ser_action);
+
+template <typename Stream>
+int ReadWriteAuxPow(Stream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionGetSerializeSize ser_action);
+
+>>>>>>> 1ce1ec0... first test of merged mining patch
 enum
 {
     // primary version
@@ -1171,6 +1189,15 @@ enum
 
     // modifiers
     BLOCK_VERSION_AUXPOW         = (1 << 8),
+<<<<<<< HEAD
+=======
+
+    // bits allocated for chain ID
+    BLOCK_VERSION_CHAIN_START    = (1 << 16),
+    BLOCK_VERSION_CHAIN_END      = (1 << 30),
+};
+
+>>>>>>> 1ce1ec0... first test of merged mining patch
 
     // bits allocated for chain ID
     BLOCK_VERSION_CHAIN_START    = (1 << 16),
@@ -1274,7 +1301,6 @@ public:
     uint256 ExtractMatches(std::vector<uint256> &vMatch);
 };
 
-
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
  * requirements.  When they solve the proof-of-work, they broadcast the block
@@ -1286,7 +1312,7 @@ class CBlockHeader
 {
 public:
     // header
-    static const int CURRENT_VERSION=2;
+    static const int CURRENT_VERSION=BLOCK_VERSION_DEFAULT;
     int nVersion;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
@@ -1309,12 +1335,25 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
+<<<<<<< HEAD
         nSerSize += ReadWriteAuxPow(s, auxpow, nType, nVersion, ser_action);
+=======
+
+        nSerSize += ReadWriteAuxPow(s, auxpow, nType, nVersion, ser_action);
+
+>>>>>>> 1ce1ec0... first test of merged mining patch
     )
+
+    int GetChainID() const
+    {
+        return nVersion / BLOCK_VERSION_CHAIN_START;
+     }
+ 
+    void SetAuxPow(CAuxPow* pow);
 
     void SetNull()
     {
-        nVersion = CBlockHeader::CURRENT_VERSION;
+        nVersion = CBlockHeader::CURRENT_VERSION | (GetOurChainID() * BLOCK_VERSION_CHAIN_START);
         hashPrevBlock = 0;
         hashMerkleRoot = 0;
         nTime = 0;
@@ -1337,6 +1376,17 @@ public:
     {
         return (int64)nTime;
     }
+
+    bool CheckProofOfWork(int nHeight) const;
+
+    /*
+    int GetSigOpCount() const
+    {
+        int n = 0;
+        BOOST_FOREACH(const CTransaction& tx, vtx)
+            n += tx.GetSigOpCount();
+        return n;
+    }*/
 
     void UpdateTime(const CBlockIndex* pindexPrev);
 };
@@ -1524,7 +1574,6 @@ public:
         printf("\n");
     }
 
-
     /** Undo the effects of this block (with given index) on the UTXO set represented by coins.
      *  In case pfClean is provided, operation will try to be tolerant about errors, and *pfClean
      *  will be true if no problems were found. Otherwise, the return value will be false in case
@@ -1540,8 +1589,15 @@ public:
     // Add this block to the block index, and if necessary, switch the active block chain to this
     bool AddToBlockIndex(CValidationState &state, const CDiskBlockPos &pos);
 
+<<<<<<< HEAD
     // Context-independent validity checks
     bool CheckBlock(int nHeight, CValidationState &state, bool fCheckPOW=true, bool fCheckMerkleRoot=true) const;
+=======
+    // Context-independent validity checks, however in I0coin
+    //  nHeight is needed to see if merged mining is allowed.
+    //  Merged mining is introduced in block 160000.
+    bool CheckBlock(CValidationState &state, int nHeight, bool fCheckPOW=true, bool fCheckMerkleRoot=true) const;
+>>>>>>> 1ce1ec0... first test of merged mining patch
 
     // Store block on disk
     // if dbp is provided, the file is known to already reside on disk
@@ -1818,13 +1874,7 @@ public:
     static bool IsSuperMajority(int minVersion, const CBlockIndex* pstart,
                                 unsigned int nRequired, unsigned int nToCheck);
 
-    std::string ToString() const
-    {
-        return strprintf("CBlockIndex(pprev=%p, pnext=%p, nHeight=%d, merkle=%s, hashBlock=%s)",
-            pprev, pnext, nHeight,
-            hashMerkleRoot.ToString().substr(0,10).c_str(),
-            BlockHashStr(GetBlockHash()).c_str());
-    }
+    std::string ToString() const;
 
     void print() const
     {

@@ -325,7 +325,11 @@ class Listener(Server):
 
     @defer.inlineCallbacks
     def rpc_getwork(self, data=None):
+<<<<<<< HEAD
         ''' This rpc call generates bytecoin miner compatible work from data received
+=======
+        ''' This rpc call generates bitcoin miner compatible work from data received
+>>>>>>> 1ce1ec0... first test of merged mining patch
         from the aux and parent chains.
         '''
         try:
@@ -428,7 +432,11 @@ def run():
         help='listen on PORT for RPC connections from miners asking for work and providing responses (default: 9992)',
         type=int, action='store', default=9992, dest='worker_port')
 
+<<<<<<< HEAD
     parent_group = parser.add_argument_group('parent chain (bytecoin) interface')
+=======
+    parent_group = parser.add_argument_group('parent chain (bitcoin) interface')
+>>>>>>> 1ce1ec0... first test of merged mining patch
     parent_group.add_argument('-p', '--parent-url', metavar='PARENT_URL',
                               help='connect to the parent RPC at this address (default: http://un:pw@127.0.0.1:8332/)',
                               type=str, action='store',

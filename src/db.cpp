@@ -4,6 +4,8 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "db.h"
+#include "net.h"
+#include "auxpow.h"
 #include "util.h"
 #include "main.h"
 #include <boost/version.hpp>

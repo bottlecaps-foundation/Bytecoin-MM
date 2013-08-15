@@ -6,7 +6,11 @@
 #include "main.h"
 #include "db.h"
 #include "init.h"
+<<<<<<< HEAD
 #include "bytecoinrpc.h"
+=======
+#include "bitcoinrpc.h"
+>>>>>>> 1ce1ec0... first test of merged mining patch
 #include "auxpow.h"
 
 using namespace json_spirit;
@@ -374,6 +378,7 @@ Value submitblock(const Array& params, bool fHelp)
     return Value::null;
 }
 
+<<<<<<< HEAD
 Value getauxblock(const Array& params, bool fHelp)
 {
     if (fHelp || (params.size() != 0 && params.size() != 2))
@@ -509,6 +514,8 @@ Value buildmerkletree(const Array& params, bool fHelp)
     return result;
 }
  
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
 Value getworkaux(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 1)
@@ -534,6 +541,7 @@ Value getworkaux(const Array& params, bool fHelp)
             );
 
     if (vNodes.empty())
+<<<<<<< HEAD
         throw JSONRPCError(-9, "Bytecoin is not connected!");
 
     if (IsInitialBlockDownload())
@@ -542,6 +550,16 @@ Value getworkaux(const Array& params, bool fHelp)
     static map<uint256, pair<CBlock*, unsigned int> > mapNewBlock;
     static vector<CBlockTemplate*> vNewBlockTemplate;
     static CReserveKey reserveKey(pwalletMain);
+=======
+        throw JSONRPCError(-9, "I0Coin is not connected!");
+
+    if (IsInitialBlockDownload())
+        throw JSONRPCError(-10, "I0Coin is downloading blocks...");
+
+    static map<uint256, pair<CBlock*, unsigned int> > mapNewBlock;
+    static vector<CBlockTemplate*> vNewBlockTemplate;
+    static CReserveKey reservekey(pwalletMain);
+>>>>>>> 1ce1ec0... first test of merged mining patch
 
     if (params.size() == 1)
     {
@@ -565,16 +583,22 @@ Value getworkaux(const Array& params, bool fHelp)
                     delete pblocktemplate;
                 vNewBlockTemplate.clear();
             }
+<<<<<<< HEAD
 
             // Clear pindexPrev so future getworks make a new block, despite any failures from here on
             pindexPrev = NULL;
 
             nTransactionsUpdatedLast = nTransactionsUpdated;
             CBlockIndex* pindexPrevNew = pindexBest;
+=======
+            nTransactionsUpdatedLast = nTransactionsUpdated;
+            pindexPrev = pindexBest;
+>>>>>>> 1ce1ec0... first test of merged mining patch
             vchAuxPrev = vchAux;
             nStart = GetTime();
 
             // Create new block
+<<<<<<< HEAD
             pblocktemplate = CreateNewBlock(reserveKey);
             if (!pblocktemplate)
                 throw JSONRPCError(RPC_OUT_OF_MEMORY, "Out of memory");
@@ -587,6 +611,17 @@ Value getworkaux(const Array& params, bool fHelp)
 
         // Update nTime
         pblock->UpdateTime(pindexPrev);
+=======
+            pblocktemplate = CreateNewBlock(reservekey);
+            if (!pblocktemplate)
+                throw JSONRPCError(-7, "Out of memory");
+            vNewBlockTemplate.push_back(pblocktemplate);
+        }
+        CBlock* pblock = &pblocktemplate->block; // pointer for convenience
+
+        // Update nTime
+        pblock->nTime = max(pindexPrev->GetMedianTimePast()+1, GetAdjustedTime());
+>>>>>>> 1ce1ec0... first test of merged mining patch
         pblock->nNonce = 0;
 
         // Update nExtraNonce
@@ -615,7 +650,10 @@ Value getworkaux(const Array& params, bool fHelp)
     {
         if (params[0].get_str() != "submit" && params[0].get_str() != "")
             throw JSONRPCError(-8, "<aux> must be the empty string or 'submit' if work is being submitted");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
         // Parse parameters
         vector<unsigned char> vchData = ParseHex(params[1].get_str());
         if (vchData.size() != 128)
@@ -629,7 +667,10 @@ Value getworkaux(const Array& params, bool fHelp)
         // Get saved block
         if (!mapNewBlock.count(pdata->hashMerkleRoot))
             return false;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
         CBlock* pblock = mapNewBlock[pdata->hashMerkleRoot].first;
         unsigned int nExtraNonce = mapNewBlock[pdata->hashMerkleRoot].second;
 
@@ -643,16 +684,22 @@ Value getworkaux(const Array& params, bool fHelp)
         script.GetOp(pc, opcode);
         script.GetOp(pc, opcode);
         script.GetOp(pc, opcode);
+<<<<<<< HEAD
         script.GetOp(pc, opcode);
 
         if (opcode != OP_2)
             throw runtime_error("invalid aux pow script");
 
+=======
+        if (opcode != OP_2)
+            throw runtime_error("invalid aux pow script");
+>>>>>>> 1ce1ec0... first test of merged mining patch
         vector<unsigned char> vchAux;
         script.GetOp(pc, opcode, vchAux);
 
         RemoveMergedMiningHeader(vchAux);
 
+<<<<<<< HEAD
         int size = 0;
         if ( pblock->vtx[0].vin[0].scriptSig[0] < OP_PUSHDATA1) {
           size = pblock->vtx[0].vin[0].scriptSig[0];
@@ -666,6 +713,9 @@ Value getworkaux(const Array& params, bool fHelp)
         unsigned int nHeight = bn.getuint();
 
         pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(nHeight, pblock->nBits, nExtraNonce, vchAux);
+=======
+        pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(pblock->nBits, nExtraNonce, vchAux);
+>>>>>>> 1ce1ec0... first test of merged mining patch
         pblock->hashMerkleRoot = pblock->BuildMerkleTree();
 
         if (params.size() > 2)
@@ -675,7 +725,11 @@ Value getworkaux(const Array& params, bool fHelp)
 
             CAuxPow pow(pblock->vtx[0]);
 
+<<<<<<< HEAD
             for (int i = 3 ; i < params.size() ; i++)
+=======
+            for (unsigned int i = 3 ; i < params.size() ; i++)
+>>>>>>> 1ce1ec0... first test of merged mining patch
             {
                 uint256 nHash;
                 nHash.SetHex(params[i].get_str());
@@ -684,8 +738,13 @@ Value getworkaux(const Array& params, bool fHelp)
 
             pow.SetMerkleBranch(pblock);
             pow.nChainIndex = nChainIndex;
+<<<<<<< HEAD
             pow.parentBlock = *pblock;
             CDataStream ss(SER_GETHASH, 0);
+=======
+            pow.parentBlockHeader = *pblock;
+            CDataStream ss(SER_GETHASH, PROTOCOL_VERSION);
+>>>>>>> 1ce1ec0... first test of merged mining patch
             ss << pow;
             Object result;
             result.push_back(Pair("auxpow", HexStr(ss.begin(), ss.end())));
@@ -695,7 +754,11 @@ Value getworkaux(const Array& params, bool fHelp)
         {
             if (params[0].get_str() == "submit")
             {
+<<<<<<< HEAD
                 return CheckWork(pblock, *pwalletMain, reserveKey);
+=======
+                return CheckWork(pblock, *pwalletMain, reservekey);
+>>>>>>> 1ce1ec0... first test of merged mining patch
             }
             else
             {
@@ -708,6 +771,7 @@ Value getworkaux(const Array& params, bool fHelp)
     }
 }
 
+<<<<<<< HEAD
 Value getblocktemplateaux(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() < 1 || params.size() > 2)
@@ -977,3 +1041,103 @@ Value getauxpowfromblock(const Array& params, bool fHelp)
     return result;
 }
 
+=======
+Value getauxblock(const Array& params, bool fHelp)
+{
+    if (fHelp || (params.size() != 0 && params.size() != 2))
+        throw runtime_error(
+            "getauxblock [<hash> <auxpow>]\n"
+            " create a new block"
+            "If <hash>, <auxpow> is not specified, returns a new block hash.\n"
+            "If <hash>, <auxpow> is specified, tries to solve the block based on "
+            "the aux proof of work and returns true if it was successful.");
+
+    if (vNodes.empty())
+        throw JSONRPCError(-9, "I0Coin is not connected!");
+
+    if (IsInitialBlockDownload())
+        throw JSONRPCError(-10, "I0Coin is downloading blocks...");
+
+    static map<uint256, CBlock*> mapNewBlock;
+    static vector<CBlockTemplate*> vNewBlockTemplate;
+    static CReserveKey reservekey(pwalletMain);
+
+    if (params.size() == 0)
+    {
+        // Update block
+        static unsigned int nTransactionsUpdatedLast;
+        static CBlockIndex* pindexPrev;
+        static int64 nStart;
+	static CBlock* pblock;
+        static CBlockTemplate* pblocktemplate;
+        if (pindexPrev != pindexBest ||
+            (nTransactionsUpdated != nTransactionsUpdatedLast && GetTime() - nStart > 60))
+        {
+            if (pindexPrev != pindexBest)
+            {
+                // Deallocate old blocks since they're obsolete now
+                mapNewBlock.clear();
+                BOOST_FOREACH(CBlockTemplate* pblocktemplate, vNewBlockTemplate)
+                    delete pblocktemplate;
+                vNewBlockTemplate.clear();
+            }
+            nTransactionsUpdatedLast = nTransactionsUpdated;
+            pindexPrev = pindexBest;
+            nStart = GetTime();
+
+            // Create new block with nonce = 0 and extraNonce = 1
+            pblocktemplate = CreateNewBlock(reservekey);
+            if (!pblocktemplate)
+                throw JSONRPCError(-7, "Out of memory");
+
+	    pblock = &pblocktemplate->block;
+            // Update nTime
+            pblock->nTime = max(pindexPrev->GetMedianTimePast()+1, GetAdjustedTime());
+            pblock->nNonce = 0;
+
+            // Push OP_2 just in case we want versioning later
+            pblock->vtx[0].vin[0].scriptSig = CScript() << pblock->nBits << CBigNum(1) << OP_2;
+            pblock->hashMerkleRoot = pblock->BuildMerkleTree();
+
+            // Sets the version
+            pblock->SetAuxPow(new CAuxPow());
+
+            // Save
+            mapNewBlock[pblock->GetHash()] = pblock;
+
+            vNewBlockTemplate.push_back(pblocktemplate);
+        }
+
+        uint256 hashTarget = CBigNum().SetCompact(pblock->nBits).getuint256();
+
+        Object result;
+        result.push_back(Pair("target",   HexStr(BEGIN(hashTarget), END(hashTarget))));
+        result.push_back(Pair("hash", pblock->GetHash().GetHex()));
+        result.push_back(Pair("chainid", pblock->GetChainID()));
+        return result;
+    }
+    else
+    {
+        uint256 hash;
+        hash.SetHex(params[0].get_str());
+        vector<unsigned char> vchAuxPow = ParseHex(params[1].get_str());
+        CDataStream ss(vchAuxPow, SER_GETHASH, PROTOCOL_VERSION);
+        CAuxPow* pow = new CAuxPow();
+        ss >> *pow;
+        if (!mapNewBlock.count(hash))
+            return ::error("getauxblock() : block not found");
+
+        CBlock* pblock = mapNewBlock[hash];
+        pblock->SetAuxPow(pow);
+
+        if (!CheckWork(pblock, *pwalletMain, reservekey))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+}
+>>>>>>> 1ce1ec0... first test of merged mining patch
