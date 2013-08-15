@@ -3,7 +3,10 @@
 // file license.txt or http://www.opensource.org/licenses/mit-license.php.
 #include "script.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
 #include "main.h"
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
 >>>>>>> 1ce1ec0... first test of merged mining patch
 #include "auxpow.h"
@@ -27,7 +30,11 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
         return error("AuxPow is not a generate");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (!fTestNet && parentBlock.GetChainID() == nChainID)
+=======
+    if (!fTestNet && parentBlockHeader.GetChainID() == nChainID)
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
     if (!fTestNet && parentBlockHeader.GetChainID() == nChainID)
 >>>>>>> 1ce1ec0... first test of merged mining patch
@@ -43,7 +50,11 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
 
     // Check that we are in the parent block merkle tree
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (CBlock::CheckMerkleBranch(GetHash(), vMerkleBranch, nIndex) != parentBlock.hashMerkleRoot)
+=======
+    if (CBlock::CheckMerkleBranch(GetHash(), vMerkleBranch, nIndex) != parentBlockHeader.hashMerkleRoot)
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
     if (CBlock::CheckMerkleBranch(GetHash(), vMerkleBranch, nIndex) != parentBlockHeader.hashMerkleRoot)
 >>>>>>> 1ce1ec0... first test of merged mining patch
@@ -114,7 +125,11 @@ bool CAuxPow::Check(uint256 hashAuxBlock, int nChainID)
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 CScript MakeCoinbaseWithAux(unsigned int nHeight, unsigned int nBits, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
+=======
+CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
 CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, vector<unsigned char>& vchAux)
 >>>>>>> 1ce1ec0... first test of merged mining patch
@@ -124,7 +139,11 @@ CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, vector
 
     // Push OP_2 just in case we want versioning later
 <<<<<<< HEAD
+<<<<<<< HEAD
     return CScript() << nHeight << nBits << nExtraNonce << OP_2 << vchAuxWithHeader;
+=======
+    return CScript() << nBits << nExtraNonce << OP_2 << vchAuxWithHeader;
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
     return CScript() << nBits << nExtraNonce << OP_2 << vchAuxWithHeader;
 >>>>>>> 1ce1ec0... first test of merged mining patch
@@ -134,9 +153,12 @@ CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, vector
 void IncrementExtraNonceWithAux(CBlock* pblock, CBlockIndex* pindexPrev, unsigned int& nExtraNonce, vector<unsigned char>& vchAux)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     vector<unsigned char> vchAuxWithHeader(UBEGIN(pchMergedMiningHeader), UEND(pchMergedMiningHeader));
     vchAuxWithHeader.insert(vchAuxWithHeader.end(), vchAux.begin(), vchAux.end());
 
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
 >>>>>>> 1ce1ec0... first test of merged mining patch
     // Update nExtraNonce
@@ -148,6 +170,7 @@ void IncrementExtraNonceWithAux(CBlock* pblock, CBlockIndex* pindexPrev, unsigne
     }
     ++nExtraNonce;
 <<<<<<< HEAD
+<<<<<<< HEAD
     unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for block.version=2
     pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(nHeight, pblock->nBits, nExtraNonce, vchAux);
     assert(pblock->vtx[0].vin[0].scriptSig.size() <= 100);
@@ -158,10 +181,15 @@ void IncrementExtraNonceWithAux(CBlock* pblock, CBlockIndex* pindexPrev, unsigne
 template
 int ReadWriteAuxPow(ser_streamplaceholder& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionGetSerializeSize ser_action);
 =======
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
 
     pblock->vtx[0].vin[0].scriptSig = MakeCoinbaseWithAux(pblock->nBits, nExtraNonce, vchAux);
     pblock->hashMerkleRoot = pblock->BuildMerkleTree();
 }
 
 
+<<<<<<< HEAD
+>>>>>>> 1ce1ec0... first test of merged mining patch
+=======
 >>>>>>> 1ce1ec0... first test of merged mining patch

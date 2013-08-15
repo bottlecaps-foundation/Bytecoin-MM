@@ -182,10 +182,17 @@ Value stop(const Array& params, bool fHelp)
         throw runtime_error(
             "stop\n"
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
             "Stop Bytecoin server.");
     // Shutdown will take long enough that the response should get back
     StartShutdown();
     return "Bytecoin server stopping";
+=======
+            "Stop I0coin server.");
+    // Shutdown will take long enough that the response should get back
+    StartShutdown();
+    return "I0coin server stopping";
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
             "Stop I0coin server.");
     // Shutdown will take long enough that the response should get back
@@ -393,6 +400,7 @@ static const CRPCCommand vRPCCommands[] =
     { "getwork",                &getwork,                true,   false },
     { "getworkaux",             &getworkaux,             true,   false },
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
     { "getauxblock",            &getauxblock,            true,   false },
     { "buildmerkletree",        &buildmerkletree,        true,   false },
     { "listaccounts",           &listaccounts,           false,  false },
@@ -401,6 +409,12 @@ static const CRPCCommand vRPCCommands[] =
     { "getblocktemplateaux",    &getblocktemplateaux,    true,   false },
     { "getauxfromblock",        &getauxfromblock,        false,  false },
     { "getauxpowfromblock",     &getauxpowfromblock,     false,  false },
+=======
+    { "listaccounts",           &listaccounts,           false,  false },
+    { "settxfee",               &settxfee,               false,  false },
+    { "getblocktemplate",       &getblocktemplate,       true,   false },
+    { "getauxblock",            &getauxblock,            true,   false },
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
     { "listaccounts",           &listaccounts,           false,  false },
     { "settxfee",               &settxfee,               false,  false },
@@ -455,7 +469,11 @@ string HTTPPost(const string& strMsg, const map<string,string>& mapRequestHeader
     ostringstream s;
     s << "POST / HTTP/1.1\r\n"
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
       << "User-Agent: bytecoin-json-rpc/" << FormatFullVersion() << "\r\n"
+=======
+      << "User-Agent: i0coin-json-rpc/" << FormatFullVersion() << "\r\n"
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
       << "User-Agent: i0coin-json-rpc/" << FormatFullVersion() << "\r\n"
 >>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
@@ -490,7 +508,11 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
         return strprintf("HTTP/1.0 401 Authorization Required\r\n"
             "Date: %s\r\n"
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
             "Server: bytecoin-json-rpc/%s\r\n"
+=======
+            "Server: i0coin-json-rpc/%s\r\n"
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
             "Server: i0coin-json-rpc/%s\r\n"
 >>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
@@ -521,7 +543,11 @@ static string HTTPReply(int nStatus, const string& strMsg, bool keepalive)
             "Content-Length: %"PRIszu"\r\n"
             "Content-Type: application/json\r\n"
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
             "Server: bytecoin-json-rpc/%s\r\n"
+=======
+            "Server: i0coin-json-rpc/%s\r\n"
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
             "Server: i0coin-json-rpc/%s\r\n"
 >>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
@@ -656,7 +682,11 @@ bool HTTPAuthorized(map<string, string>& mapHeaders)
 
 //
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
 // JSON-RPC protocol.  Bytecoin speaks version 1.0 for maximum compatibility,
+=======
+// JSON-RPC protocol.  I0coin speaks version 1.0 for maximum compatibility,
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
 // JSON-RPC protocol.  I0coin speaks version 1.0 for maximum compatibility,
 >>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
@@ -937,7 +967,11 @@ void ThreadRPCServer2(void* parg)
         unsigned char rand_pwd[32];
         RAND_bytes(rand_pwd, 32);
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
         string strWhatAmI = "To use bytecoind";
+=======
+        string strWhatAmI = "To use i0coind";
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
         string strWhatAmI = "To use i0coind";
 >>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
@@ -1088,7 +1122,12 @@ void JSONRequest::parse(const Value& valRequest)
         throw JSONRPCError(RPC_INVALID_REQUEST, "Method must be a string");
     strMethod = valMethod.get_str();
 <<<<<<< HEAD:src/bytecoinrpc.cpp
+<<<<<<< HEAD:src/bytecoinrpc.cpp
     if (strMethod != "getwork" && strMethod != "getblocktemplate" && strMethod != "getblocktemplateaux" && strMethod != "getblockcount" && strMethod != "getworkaux" && strMethod != "getauxblock" && strMethod != "buildmerkletree" && strMethod != "getauxfromblock" && strMethod != "getauxpowfromblock")
+=======
+    if (strMethod != "getwork" && strMethod != "getblocktemplate" &&
+            strMethod != "getworkaux" && strMethod != "getauxblock")
+>>>>>>> 1ce1ec0... first test of merged mining patch:src/bitcoinrpc.cpp
 =======
     if (strMethod != "getwork" && strMethod != "getblocktemplate" &&
             strMethod != "getworkaux" && strMethod != "getauxblock")

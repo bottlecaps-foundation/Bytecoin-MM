@@ -143,6 +143,9 @@ HEADERS += src/qt/bytecoingui.h \
 =======
     src/qt/bitcoinaddressvalidator.h \
     src/auxpow.h \
+<<<<<<< HEAD:bytecoin-qt.pro
+>>>>>>> 1ce1ec0... first test of merged mining patch:bitcoin-qt.pro
+=======
 >>>>>>> 1ce1ec0... first test of merged mining patch:bitcoin-qt.pro
     src/alert.h \
     src/addrman.h \
@@ -225,6 +228,9 @@ SOURCES += src/qt/bytecoin.cpp src/qt/bytecoingui.cpp \
 =======
     src/qt/bitcoinaddressvalidator.cpp \
     src/auxpow.cpp \
+<<<<<<< HEAD:bytecoin-qt.pro
+>>>>>>> 1ce1ec0... first test of merged mining patch:bitcoin-qt.pro
+=======
 >>>>>>> 1ce1ec0... first test of merged mining patch:bitcoin-qt.pro
     src/alert.cpp \
     src/version.cpp \

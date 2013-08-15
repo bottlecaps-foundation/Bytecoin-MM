@@ -23,7 +23,10 @@ class CAddress;
 class CInv;
 class CNode;
 <<<<<<< HEAD
+<<<<<<< HEAD
 class CBlockIndex;
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
 >>>>>>> 1ce1ec0... first test of merged mining patch
 class CAuxPow;
@@ -1171,9 +1174,34 @@ int ReadWriteAuxPow(CDataStream& s, const boost::shared_ptr<CAuxPow>& auxpow, in
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 template <typename Stream>
 int ReadWriteAuxPow(Stream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionSerialize ser_action);
+=======
+template <typename Stream>
+int ReadWriteAuxPow(Stream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionSerialize ser_action);
+
+template <typename Stream>
+int ReadWriteAuxPow(Stream& s, boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionUnserialize ser_action);
+
+template <typename Stream>
+int ReadWriteAuxPow(Stream& s, const boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionGetSerializeSize ser_action);
+
+enum
+{
+    // primary version
+    BLOCK_VERSION_DEFAULT        = (1 << 0),
+
+    // modifiers
+    BLOCK_VERSION_AUXPOW         = (1 << 8),
+
+    // bits allocated for chain ID
+    BLOCK_VERSION_CHAIN_START    = (1 << 16),
+    BLOCK_VERSION_CHAIN_END      = (1 << 30),
+};
+
+>>>>>>> 1ce1ec0... first test of merged mining patch
 
 template <typename Stream>
 int ReadWriteAuxPow(Stream& s, boost::shared_ptr<CAuxPow>& auxpow, int nType, int nVersion, CSerActionUnserialize ser_action);
@@ -1336,7 +1364,13 @@ public:
         READWRITE(nBits);
         READWRITE(nNonce);
 <<<<<<< HEAD
+<<<<<<< HEAD
         nSerSize += ReadWriteAuxPow(s, auxpow, nType, nVersion, ser_action);
+=======
+
+        nSerSize += ReadWriteAuxPow(s, auxpow, nType, nVersion, ser_action);
+
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
 
         nSerSize += ReadWriteAuxPow(s, auxpow, nType, nVersion, ser_action);
@@ -1590,13 +1624,19 @@ public:
     bool AddToBlockIndex(CValidationState &state, const CDiskBlockPos &pos);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Context-independent validity checks
     bool CheckBlock(int nHeight, CValidationState &state, bool fCheckPOW=true, bool fCheckMerkleRoot=true) const;
 =======
+=======
+>>>>>>> 1ce1ec0... first test of merged mining patch
     // Context-independent validity checks, however in I0coin
     //  nHeight is needed to see if merged mining is allowed.
     //  Merged mining is introduced in block 160000.
     bool CheckBlock(CValidationState &state, int nHeight, bool fCheckPOW=true, bool fCheckMerkleRoot=true) const;
+<<<<<<< HEAD
+>>>>>>> 1ce1ec0... first test of merged mining patch
+=======
 >>>>>>> 1ce1ec0... first test of merged mining patch
 
     // Store block on disk

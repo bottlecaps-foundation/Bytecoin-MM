@@ -2,8 +2,13 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file license.txt or http://www.opensource.org/licenses/mit-license.php.
 <<<<<<< HEAD
+<<<<<<< HEAD
 #ifndef BYTECOIN_AUXPOW_H
 #define BYTECOIN_AUXPOW_H
+=======
+#ifndef BITCOIN_AUXPOW_H
+#define BITCOIN_AUXPOW_H
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
 #ifndef BITCOIN_AUXPOW_H
 #define BITCOIN_AUXPOW_H
@@ -27,8 +32,13 @@ public:
     std::vector<uint256> vChainMerkleBranch;
     // Index of chain in chains merkle tree
 <<<<<<< HEAD
+<<<<<<< HEAD
     int nChainIndex;
     CBlock parentBlock;
+=======
+    unsigned int nChainIndex;
+    CBlockHeader parentBlockHeader;
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
     unsigned int nChainIndex;
     CBlockHeader parentBlockHeader;
@@ -44,9 +54,13 @@ public:
         // Always serialize the saved parent block as header so that the size of CAuxPow
         // is consistent.
 <<<<<<< HEAD
+<<<<<<< HEAD
         CBlockHeader block = parentBlock.GetBlockHeader();
         READWRITE(block);
 	//        nSerSize += SerReadWrite(s, parentBlock.GetBlockHeader(), nType, nVersion, ser_action);
+=======
+        nSerSize += SerReadWrite(s, parentBlockHeader, nType, nVersion, ser_action);
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
         nSerSize += SerReadWrite(s, parentBlockHeader, nType, nVersion, ser_action);
 >>>>>>> 1ce1ec0... first test of merged mining patch
@@ -57,7 +71,11 @@ public:
     uint256 GetParentBlockHash()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         return parentBlock.GetHash();
+=======
+        return parentBlockHeader.GetHash();
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
         return parentBlockHeader.GetHash();
 >>>>>>> 1ce1ec0... first test of merged mining patch
@@ -101,7 +119,11 @@ int ReadWriteAuxPow(Stream& s, boost::shared_ptr<CAuxPow>& auxpow, int nType, in
 
 extern void RemoveMergedMiningHeader(std::vector<unsigned char>& vchAux);
 <<<<<<< HEAD
+<<<<<<< HEAD
 extern CScript MakeCoinbaseWithAux(unsigned int nHeight, unsigned int nBits, unsigned int nExtraNonce, std::vector<unsigned char>& vchAux);
+=======
+extern CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, std::vector<unsigned char>& vchAux);
+>>>>>>> 1ce1ec0... first test of merged mining patch
 =======
 extern CScript MakeCoinbaseWithAux(unsigned int nBits, unsigned int nExtraNonce, std::vector<unsigned char>& vchAux);
 >>>>>>> 1ce1ec0... first test of merged mining patch
